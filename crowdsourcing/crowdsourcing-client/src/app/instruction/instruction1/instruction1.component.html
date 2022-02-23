@@ -1,0 +1,182 @@
+<mat-horizontal-stepper labelPosition="bottom" #stepper (selectionChange)="onStepIndexChanged($event)">
+
+  <mat-step>
+    <ng-template matStepLabel>Overview</ng-template>
+    <div class="description-content">
+      <div class="block"><br>
+        <h2>Thank you for your participation!</h2><br>
+          Given a natural scene image (E.g. living room), the goal of this task is two fold:<br><br>
+          <p style="margin-left: 20px;"><b>1. validate the correctness of relationships between objects that are captured in the scene.</b></p><br>
+          <p style="margin-left: 20px;"><b>2. select (or add if necessary) a minimal set of relationships that are sufficient to identify the given image label</b></p><br>
+          Now, please click on the 'Next' button and read the following instructions step-by-step.
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>Check A Relation</ng-template>
+    <div class="description-content">
+      <strong>Step 1: Check a relation</strong><br><br>
+      <div class="block">
+        During this step, you are required to validate all the relations in the Relation List (on the right side of the page).<br/><br/>
+        First, move your mouse on the relation that needs your validation, then you will see two bounding boxes appear on the Original Image.<br>
+        Please note that the color of each bounding boxes is the same as the corresponding object label in the Relation List.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/1_move.gif" width="60%">
+          <figcaption>(in this example, 'room has handle' is a wrong relation)</figcaption>
+        </figure>
+      </div>
+      <div class="block">
+        <br/>Then, you should validate whether the description of the relation correctly corresponds to the bounding boxes or not.
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>Validate A Relation</ng-template>
+    <div class="description-content">
+      <strong>Step 2: Validate a relation</strong><br><br>
+      <div class="block">
+        Now, you need to validate whether the relation is <span style="color: green">correct</span> or <span style="color: red">wrong</span> (Don’t worry if you click a button that you do not aspire by mistake, you can edit your answers later).
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/2_wrong_or_correct.gif" width="60%">
+          <figcaption>
+            (in this example, ‘bed in room’ is a correct relation for the label bedroom)
+          </figcaption>
+        </figure>
+      </div>
+      <div class="block">
+        <p>If you think it is correct, please suggest whether the the relation is typical. If the relation is unusual, please give your reason.</p><br>
+      </div>
+      <div class="block">
+        <p>Then, you will be asked to determine <b>how relevant this relation is in identifying the given label (e.g. child room) of the scene </b>.</p>
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/3_slider.gif" width="60%">
+        </figure>
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>Validate All the Relations</ng-template>
+    <div class="description-content">
+      <strong>Step 3: Validate all the relations</strong><br><br>
+      <div class="block">
+        Repeat Step 2 until there are no pending relations that need validation (and the following window will pop up).
+        If you think that the relations you have validated are not sufficient for describing the given scene image, please add new relations that you think are missing.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/4_skip_or_add.gif" width="60%">
+        </figure>
+      </div>
+      <br>
+      <div class="block">
+        If you think that the given label is not correct, please give your reason (and the correct label) and submit the task.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/5_label_wrong.png" width="60%">
+        </figure>
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>Add New Relation</ng-template>
+    <div class="description-content">
+      <strong>Step 4: Add new relation</strong><br><br>
+      <div class="block">
+        In order to add a new relation to correctly describe the given scene image, first, you are asked to draw a bounding box of an object in the relation you want to add.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/6_bbox.gif" width="60%">
+        </figure>
+      </div>
+      <br>
+      <div class="block">
+        Then you should select the name of this object from a given list. If you can’t find the object name you want, please select ‘object’.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/7_object_name.gif" width="60%">
+        </figure>
+      </div>
+      <br>
+      <div class="block">
+        After that, you are asked to determine whether this object is typical, and what color it is (optional).
+        Next, select the type of the relation from a given list.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/8_add_relation.gif" width="60%">
+        </figure>
+      </div>
+      <br>
+      <div class="block">
+        Similarly, please define the second object in this relation,
+        by repeating the previous procedure (draw a bounding box, select an object name, determine whether it is typical, select the right color).
+        Then, rate the importance of this relation, give your reason, and add this relation.
+        <b>Please add a relation which is relevant to identify the scene. E.g. "sofa" for identifying living room</b>
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/9_add_relation.png" width="80%">
+        </figure>
+      </div>
+    </div>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Define Minimal Set</ng-template>
+    <div class="description-content">
+      <strong>Step 5: Define a minimal identifying set</strong><br><br>
+      <div class="block">
+        After you validate all the relations, please select the relations to form a minimal set that can sufficiently identify the scene. Also, during this step, you can edit your answers.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/10_min_set.gif" width="60%">
+        </figure>
+      </div>
+    </div>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Submission</ng-template>
+    <div class="description-content">
+      <strong>Step 6: Submit your answers</strong><br><br>
+      <div class="block">
+        This is the final step before submission. During this step, please choose all objects which are specifically relevant to the given scene.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction1/11_select_objects.gif" width="60%">
+        </figure>
+      </div>
+      <div class="block">
+        After that, you can submit this task.
+      </div>
+      <br>
+      <div class="block" style="width: 85%">
+        <h2 style="color: red;">Bonus!</h2>
+        You will receive additional bonuses based on the quality with which you complete the tasks. The bonus payment will be based on the following factors:<br><br>
+        <p style="margin-left: 20px;">1. The validity of the new relations added in the image.</p><br>
+        <p style="margin-left: 20px;">2. The accuracy of bounding boxes corresponding to the new relations added.</p><br>
+        <p style="margin-left: 20px;">3. The quality of the reasons provided.</p><br>
+      </div>
+    </div>
+  </mat-step>
+
+</mat-horizontal-stepper>

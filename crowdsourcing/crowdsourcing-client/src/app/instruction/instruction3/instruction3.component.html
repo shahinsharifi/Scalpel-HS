@@ -1,0 +1,62 @@
+<div style="margin-top: 20px;" class="intro3">
+
+  <p>A high-quality image dataset can radically improve the performance of computer vision models. Many errors made by machine learning models  are a result of under-represented types of images in the dataset. Such under-represented types of images are called unusual or atypical, with respect to the images in the dataset.</p>
+
+  <p>To help us improve the quality of the machine learning models that automatically detect objects in images, in this task we ask you to:</p>
+  <ul>
+    <li>First, determine whether the given image is about the given class or contains the object(s) of the given class;</li>
+    <li>Then, determine the degree of typicality of the image with respect to the dataset using a 7-point Likert-scale (from <i>Highly Typical</i> to <i>Highly Atypical</i>). Here you need to judge whether the given image (shown on the left-hand side of your screen in the task) is typical with respect to the dataset.</li>
+  </ul>
+
+  <p>In the task, to help you make better decisions, we also show some images (with their classes shown in the “Visually Similar” tab on the right-hand side of your screen in the task). These images look visually the most similar to the given image, and the machine learning model is likely to consider this image to belong to one of these classes.</p>
+  <p>Furthermore, to help you form an understanding of the given image class, we show some sample images of the given class from the dataset (but not necessarily visually similar).</p>
+  <div style="text-align: center;">
+    <img id="task-screenshot" src="./assets/instruction3/task.png" width="90%">
+    <div><i>A screenshot of the task.</i></div>
+  </div>
+
+  <ul>
+    <li>A <b>typical</b> image means there are other similar images present in the sample set shown above, and many visually similar images are of the same class;</li>
+    <li>An <b>atypical</b> image means the image is unusual with respect to the images present in the sample set, and many visually similar images belong to different classes.</li>
+  </ul>
+
+  <p>Here are some examples:</p>
+  <div style="text-align: center;">
+    <table style="width:60%;max-width:600px">
+      <tr>
+        <td style="text-align:center">Typical bird image</td>
+        <td style="text-align:center">Atypical bird image</td>
+      </tr>
+      <tr>
+        <td style="width:50%;vertical-align:top"><img width="100%" src="./assets/instruction3/bird_typical.jpg"/></td>
+        <td style="width:50%;vertical-align:top"><img width="100%" src="./assets/instruction3/bird_atypical.jpg"/></td>
+      </tr>
+    </table>
+    <br/><br/>
+
+    <table style="width:60%;max-width:600px">
+      <tr>
+        <td style="text-align:center">Typical child image</td>
+        <td style="text-align:center">Atypical child image</td>
+      </tr>
+      <tr>
+        <td style="width:50%;vertical-align:top"><img width="100%" src="./assets/instruction3/child_typical.jpg"/></td>
+        <td style="width:50%;vertical-align:top"><img width="100%" src="./assets/instruction3/child_atypical.jpg"/></td>
+      </tr>
+    </table>
+    <br/><br/>
+
+    <table style="width:60%;max-width:600px">
+      <tr>
+        <td style="text-align:center">Typical muffin image</td>
+        <td style="text-align:center">Atypical muffin image (<i>note: muffins are on a cardboard in the image</i>)</td>
+      </tr>
+      <tr>
+        <td style="width:50%;vertical-align:top"><img width="100%" src="./assets/instruction3/muffin_typical.jpg"/></td>
+        <td style="width:50%;vertical-align:top"><img width="100%" src="./assets/instruction3/muffin_atypical.jpg"/></td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+

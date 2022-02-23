@@ -1,0 +1,16 @@
+<div mat-dialog-content>
+
+  <p *ngIf="data.isTypical != null" class="title-section">
+    <mat-hint><b>Is the object/relation typical? </b></mat-hint><br>
+    {{data.isTypical}}
+  </p>
+  <br>
+  <mat-hint *ngIf="data.reason"><b>Reason:</b></mat-hint><br>
+  <p *ngIf="data.reason" class="title-section">
+    {{data.reason}}
+  </p>
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button [mat-dialog-close]="null"  color="warn">OK</button>
+</mat-dialog-actions>

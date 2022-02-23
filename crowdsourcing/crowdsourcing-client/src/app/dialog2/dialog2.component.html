@@ -1,0 +1,28 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true" matTooltip="Close">
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
+<h2 mat-dialog-title>Task Instruction</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography scroll-indicator" *ngIf="data.taskId == 1">
+  <app-instruction1 [stepIndex]="stepIndex" (onStepChanged)="onStepChanged($event)"></app-instruction1>
+  <a *ngIf="hasScroll"><span></span>Scroll</a>
+</mat-dialog-content>
+<mat-divider *ngIf="data.taskId == 1"></mat-divider>
+<div mat-dialog-actions class="instruction-but" *ngIf="data.taskId == 1">
+  <button mat-raised-button (click)="goBack()" *ngIf="stepIndex > 0">Back</button>
+  <button mat-raised-button color="primary" class="move-to-right" (click)="goForward()" *ngIf="stepIndex < 6">Next</button>
+  <button mat-raised-button color="primary" class="move-to-right" (click)="closeWindow()" *ngIf="stepIndex == 6">Go to Task</button>
+</div>
+
+<mat-dialog-content class="mat-typography scroll-indicator" *ngIf="data.taskId == 2">
+  <app-instruction2 [stepIndex]="stepIndex" (onStepChanged)="onStepChanged($event)"></app-instruction2>
+  <a *ngIf="hasScroll"><span></span>Scroll</a>
+</mat-dialog-content>
+<mat-divider *ngIf="data.taskId == 2"></mat-divider>
+<div mat-dialog-actions class="instruction-but" *ngIf="data.taskId == 2">
+  <button mat-raised-button (click)="goBack()" *ngIf="stepIndex > 0">Back</button>
+  <button mat-raised-button color="primary" class="move-to-right" (click)="goForward()" *ngIf="stepIndex < 4">Next</button>
+  <button mat-raised-button color="primary" class="move-to-right" (click)="closeWindow()" *ngIf="stepIndex == 4">Go to Task</button>
+</div>
+

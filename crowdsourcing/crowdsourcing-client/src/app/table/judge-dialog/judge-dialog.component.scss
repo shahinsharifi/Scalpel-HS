@@ -1,0 +1,65 @@
+.container {
+  width: 100%;
+}
+
+.container3{
+  display: block;
+  .mat-slider-horizontal {
+    height: 48px;
+    min-width: 250px !important;
+  }
+}
+
+.container2 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  button {
+    min-width: 120px !important;
+    margin: 10px;
+  }
+}
+
+.cancel-but{
+  font-size: 16px;
+  cursor: pointer;
+  color: #f2f2f2;
+  background-color: #EE3333 !important;
+
+}
+.submit-but{
+  font-size: 16px;
+  cursor: pointer;
+  color: #f2f2f2;
+  background-color: #006600 !important;
+
+}
+
+.message-area{
+  width: 100% !important;
+  mat-form-field{
+    width:100% !important;
+  }
+}
+
+
+.slider-but {
+  .mat-slide-toggle-thumb{
+    cursor: pointer !important;
+  }
+  cursor: pointer !important;
+}
+
+.mat-radio-button {
+  padding: 10px;
+}
+
+
+.score-section{
+  .mat-grid-tile{
+    .mat-figure{
+      justify-content: start !important;
+    }
+  }
+}

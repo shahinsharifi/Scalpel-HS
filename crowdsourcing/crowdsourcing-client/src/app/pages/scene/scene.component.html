@@ -1,0 +1,78 @@
+<div class="main-content" [hidden]="isSceneAvailable == undefined">
+
+  <mat-card class="example-card card-fix" [hidden]="!isSceneAvailable">
+    <div class="card-fix-container">
+      <mat-card-content #parentElement class="image-parent-container">
+        <mat-grid-list [cols]="breakpoint" rowHeight="700" (window:resize)="onResize($event)" class="grid-container" [gutterSize]="20">
+
+          <mat-grid-tile [colspan]="tiles[0].cols" [rowspan]="tiles[0].rows">
+            <mat-tab-group class="tab-container" [selectedIndex]="selectedImageTabIndex"  dynamicHeight>
+              <mat-tab label="Original Image: {{sceneCategory}}">
+                <ng-template matTabContent>
+                <app-image class="image-content" *ngIf="isImageLoaded" [width]="width" [active-annotation]="activeBboxDrawing"
+                           [current-image]="sceneImage" class="image-viewer">
+                </app-image>
+                </ng-template>
+              </mat-tab>
+
+              <mat-tab *ngIf="taskId == 2" label="Heatmap">
+                <ng-template matTabContent>
+                <app-image class="image-content" *ngIf="isImageLoaded" [width]="width" [active-annotation]="activeBboxDrawing"
+                           [current-image]="predictedImage" class="image-viewer">
+                </app-image>
+                </ng-template>
+              </mat-tab>
+
+            </mat-tab-group>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="tiles[1].cols" [rowspan]="tiles[1].rows" >
+
+            <mat-tab-group class="tab-container" *ngIf="isSceneAvailable && taskId == 1" [selectedIndex]="selectedDataTabIndex" (selectedIndexChange)="onTabIndexChange($event)" dynamicHeight>
+                <mat-tab label="Relation List" >
+                  <ng-template matTabContent>
+                    <app-table  (onRowSelected)="onTableSelected($event)" (onAllRowsAnnotated)="onAllRowsAnnotated();" [taskID]="taskId" [sceneCategory]="this.sceneCategory" [addNewRelationActive]="addNewRelationActive"></app-table>
+                  </ng-template>
+                </mat-tab>
+                <mat-tab label="Add New Relation" class="tab-content new-relation" *ngIf="addNewRelationActive">
+                  <ng-template matTabContent>
+                    <app-add-relation [resetForm]="activeBboxDrawing" (onGoToRelationList)="selectedDataTabIndex=0" ></app-add-relation>
+                  </ng-template>
+                </mat-tab>
+            </mat-tab-group>
+
+            <mat-tab-group class="tab-container" *ngIf="isSceneAvailable && taskId == 2" [selectedIndex]="selectedDataTabIndex" (selectedIndexChange)="onTabIndexChange($event)" dynamicHeight>
+              <mat-tab label="Add Object/Relation" class="tab-content new-relation">
+                <ng-template matTabContent>
+                    <app-add-object [resetForm]="activeBboxDrawing" (onGoToRelationList)="selectedDataTabIndex=0" ></app-add-object>
+                </ng-template>
+              </mat-tab>
+              <mat-tab label="Object/Relation List" >
+                <ng-template matTabContent>
+                  <app-table  (onRowSelected)="onTableSelected($event)" [taskID]="taskId" [sceneCategory]="this.sceneCategory"></app-table>
+                </ng-template>
+              </mat-tab>
+            </mat-tab-group>
+
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </mat-card-content>
+      <mat-divider></mat-divider><br>
+      <mat-card-actions align="end">
+          <button mat-raised-button color="primary" (click)="submit(true)" [disabled]="">Submit</button>
+      </mat-card-actions>
+
+    </div>
+  </mat-card>
+
+  <mat-card class="example-card card-fix" [hidden]="!showError">
+    <div class="card-fix-container">
+      <mat-card-header></mat-card-header>
+      <mat-card-content class="center">
+        <h1>Ops! Something went wrong. Please refresh the page.</h1>
+      </mat-card-content>
+    </div>
+  </mat-card>
+
+</div>

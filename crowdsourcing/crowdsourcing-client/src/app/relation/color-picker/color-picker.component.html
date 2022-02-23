@@ -1,0 +1,12 @@
+<form class="dropdown">
+  <mat-form-field >
+    <input matInput placeholder="{{name}}"  mccColorPickerOrigin #trigger="mccColorPickerOrigin" (focus)="onFocus()" [formControl]="formControl" autocomplete="off"/>
+    <mat-hint *ngIf="name=='Color'" align="start">(*optional)</mat-hint>
+    <button mat-button  matSuffix mat-icon-button aria-label="Clear">
+      <mcc-color-picker mccConnectedColorPicker [mccConnectedColorPickerOrigin]="trigger" hideButtons [isOpen]="isOpen" (clickOut)="isOpen=false" (change)="onColorSelected($event)">
+      </mcc-color-picker>
+    </button>
+  </mat-form-field>
+</form>
+
+

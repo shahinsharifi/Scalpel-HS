@@ -1,0 +1,17 @@
+<form class="dropdown" (focusout)="onFocusOut()">
+  <mat-form-field  >
+    <input type="text" placeholder="{{name}}"  matInput [formControl]="formControl" [matAutocomplete]="auto" >
+    <mat-hint *ngIf="name=='Object 1' || name=='Object 2' || name=='Object'" align="start" style="color: red">(*type and choose)</mat-hint>
+    <button mat-button  matSuffix mat-icon-button aria-label="Clear">
+      <mat-icon *ngIf="name=='Object 1'" class="bbox1">crop_din</mat-icon>
+      <mat-icon *ngIf="name=='Object 2'" class="bbox2">crop_din</mat-icon>
+      <mat-icon>keyboard_arrow_down</mat-icon>
+      <mat-icon [hidden]="true">keyboard_arrow_right</mat-icon>
+    </button>
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelected($event.option.value)" panelWidth="200px">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

@@ -1,0 +1,127 @@
+<mat-horizontal-stepper labelPosition="bottom" #stepper (selectionChange)="onStepIndexChanged($event)">
+
+  <mat-step>
+    <ng-template matStepLabel>Overview</ng-template>
+    <div class="description-content">
+      <div class="block"><br>
+        <h2>Thank you for your participation!</h2><br>
+        <p>The goal of this task is to identify objects and relations in a scene shown in an image that an automatic model has focused on (hot zones).
+          This is displayed using a ‘heat map’ over the image. The areas in the image which correspond to darker shades of red color indicate the objects and relations that the model has focused on.
+          We are interested in also understanding  which of these objects or relations in the hot zones are not important to identify the scene in the image.</p>
+        <br><br><br>
+        Now, please read the following instructions to learn how to finish this task.
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>Identify the Objects</ng-template>
+    <div class="description-content">
+      <strong>Step 1: Identify the Objects</strong><br><br>
+      <div class="block">
+        During this step, you are asked to draw bounding boxes to indicate all the objects/relations that comprise such hot zones.
+        <br/><br/>
+        To do this, use your mouse to draw a bounding box on the heatmap/original image. You can switch between "Heatmap" and "Original Image" modes by clicking on the tab label above the image viewer.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction2/1_bbox.gif" width="70%">
+        </figure>
+      </div>
+      <div class="block">
+        <br/>Then you should select the name of this object from a given list. If you can’t find the object name you want, please select ‘object’.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction2/2_object_name.gif" width="70%">
+        </figure>
+      </div>
+      <div class="block">
+        <br/>Then you should select the name of this object from a given list. If you can’t find the object name you want, please select ‘object’.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction2/3_add_object.gif" width="70%">
+        </figure>
+      </div>
+      <div class="block">
+        <br/>Then you should select the name of this object from a given list. If you can’t find the object name you want, please select ‘object’.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction2/4_all_objects.png" width="70%">
+        </figure>
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>Identify the Relations</ng-template>
+    <div class="description-content">
+      <strong>Step 2: Identify the Relations</strong><br><br>
+      <div class="block">
+        During this step, you are asked to identify relations existing in the hot zones, after you have identified at least two objects. Please add as many relations as are meaningfully present between the objects in the hot zones.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction2/5_add_relation.gif" width="60%">
+        </figure>
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>Judge the Relations</ng-template>
+    <div class="description-content">
+      <strong>Step 3: Judge the Relations</strong><br><br>
+      <div class="block">
+        Please judge whether each object in the hot zone goes against your idea of what you would expect to find in, for example, <b>"living room"</b> by clicking the <span style="color: green;"><b>Judge</b></span> button.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction2/6_judge.gif" width="60%">
+        </figure>
+      </div>
+      <br>
+      <div class="block">
+        In this example, ‘painting on wall’ is not an essential relation for identifying dining rooms, since the wall of a bedroom or a living can also have paintings. Please provide a brief explanation for the score assigned.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction2/7_judge_2.png" width="60%">
+        </figure>
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>Submission</ng-template>
+    <div class="description-content">
+      <strong>Step 6: Submit your answers</strong><br><br>
+      <div class="block">
+        This is the final step before submission. During this step, please suggest whether the scene shown in this image is typical. If you think that the image is an unusual example of the scene, please explain why.
+      </div>
+      <div class="image">
+        <figure>
+          <img src="./assets/instruction2/8_submit.gif" width="50%">
+        </figure>
+      </div>
+      <div class="block">
+        After that, you can submit this task.
+      </div>
+      <br>
+      <div class="block" style="width: 85%">
+        <h2 style="color: red;">Bonus!</h2>
+        You will receive additional bonuses based on the quality with which you complete the tasks. The bonus payment will be based on the following factors:<br><br>
+        <p style="margin-left: 20px;">1. The validity of the new relations added in the image.</p><br>
+        <p style="margin-left: 20px;">2. The accuracy of bounding boxes corresponding to the new relations added.</p><br>
+        <p style="margin-left: 20px;">3. The quality of the reasons provided.</p><br>
+      </div>
+    </div>
+  </mat-step>
+
+</mat-horizontal-stepper>

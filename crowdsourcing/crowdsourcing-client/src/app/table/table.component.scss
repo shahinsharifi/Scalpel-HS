@@ -1,0 +1,93 @@
+.table-container{
+  height: 100%;
+  //max-height: 600px;
+  overflow-y: auto;
+  background-color: #D9D9D9;
+}
+
+mat-list-item{
+  height: 80px !important;
+  margin-top: 5px;
+  .mat-list-item-content{
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+  }
+}
+
+.new{
+  color: fuchsia;
+  margin-bottom: 15px;
+}
+
+.correct-button {
+  background-color:#006600 !important;;
+  color:#fff !important;
+}
+.wrong-button {
+  background-color:#b30000 !important;;
+  color:#fff !important;
+}
+
+.edit-button {
+  background-color: #f16c06 !important;;
+  color:#fff !important;
+}
+
+mat-list-item {
+  background-color: #DFDEDE;
+}
+
+.relationship-row :hover {
+  cursor: pointer !important;
+
+  .object1 {
+    color: dodgerblue !important;
+    font-weight: bold;
+  }
+
+  .object2 {
+    color: red !important;
+    font-weight: bold;
+  }
+
+}
+
+
+
+.mat-tooltip {
+  white-space: pre-line;
+}
+
+.item-text{
+  mat-checkbox{
+    margin-right: 15px;
+  }
+}
+
+.item-buttons{
+  mat-chip{
+    cursor: pointer;
+  }
+
+  .mat-chip-list-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: unset;
+    margin: -4px;
+    float: right;
+  }
+}
+
+.item-rating{
+  mat-slider > *{
+    cursor: pointer !important;
+  }
+}
+
+.judge-section{
+  mat-icon{
+    font-size: 14px;
+  }
+}
+

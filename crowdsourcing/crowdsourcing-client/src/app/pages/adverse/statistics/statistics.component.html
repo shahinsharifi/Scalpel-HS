@@ -1,0 +1,32 @@
+<div mat-dialog-content >
+
+  <p class="title-section">
+
+  </p>
+  <mat-divider></mat-divider>
+
+  <p>
+    <mat-hint align="start"><strong>Total: </strong> {{data['total']}}</mat-hint>
+  </p>
+  <p>
+    <mat-hint align="start"><strong>Evaluated Labels:</strong> </mat-hint><br>
+    <span style="margin-left: 10px;" *ngFor="let item of data['label_counts']">{{item.label}}: {{item.count}}<br></span>
+  </p>
+  <p>
+    <mat-hint align="start"><strong>Label Correctness:</strong> </mat-hint><br>
+    <span style="margin-left: 10px;" *ngFor="let item of data['label_status_counts']">
+      {{item.case}}: {{item.count}}<br>
+    </span>
+  </p>
+  <p>
+    <mat-hint align="start"><strong>Atypical:</strong> </mat-hint><br>
+    <span style="margin-left: 10px;" *ngFor="let item of data['atypical_counts']">
+      {{item.atypical}}: {{item.count}}<br>
+    </span>
+  </p>
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close  color="primary">OK</button>
+</mat-dialog-actions>
+

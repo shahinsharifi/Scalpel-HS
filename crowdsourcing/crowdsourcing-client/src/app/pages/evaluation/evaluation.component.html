@@ -1,0 +1,156 @@
+<div class="main-content" [hidden]="isSceneAvailable == undefined">
+
+  <mat-card class="example-card card-fix" [hidden]="!isSceneAvailable">
+    <div class="card-fix-container">
+      <mat-card-content #parentElement class="image-parent-container">
+        <mat-grid-list [cols]="breakpoint" rowHeight="700" (window:resize)="onResize($event)" class="grid-container" [gutterSize]="20">
+
+          <mat-grid-tile [colspan]="tiles[0].cols" [rowspan]="tiles[0].rows">
+            <mat-tab-group class="tab-container" [selectedIndex]="selectedImageTabIndex"  dynamicHeight>
+              <mat-tab label="Original Image: {{sceneCategory}}">
+                <app-image class="image-content" *ngIf="isImageLoaded" [width]="width" [active-annotation]="activeBboxDrawing"
+                           [current-image]="sceneImage" class="image-viewer">
+                </app-image>
+              </mat-tab>
+
+              <mat-tab *ngIf="taskId == 2" label="Heatmap">
+                <app-image class="image-content" *ngIf="isImageLoaded" [width]="width" [active-annotation]="activeBboxDrawing"
+                           [current-image]="predictedImage" class="image-viewer">
+                </app-image>
+              </mat-tab>
+
+            </mat-tab-group>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="tiles[1].cols" [rowspan]="tiles[1].rows" >
+
+            <mat-tab-group class="tab-container" *ngIf="isSceneAvailable && taskId == 1" dynamicHeight>
+              <mat-tab label="Relation List" >
+                <ng-template matTabContent>
+                  <app-table  (onRowSelected)="onTableSelected($event)" [taskID]="taskId" [sceneCategory]="this.sceneCategory" [read-only]="true"></app-table>
+                </ng-template>
+              </mat-tab>
+            </mat-tab-group>
+
+            <mat-tab-group class="tab-container" *ngIf="isSceneAvailable && taskId == 2" dynamicHeight>
+              <mat-tab label="Object/Relation List" >
+                <ng-template matTabContent>
+                  <app-table  (onRowSelected)="onTableSelected($event)" [taskID]="taskId" [sceneCategory]="this.sceneCategory" [read-only]="true"></app-table>
+                </ng-template>
+              </mat-tab>
+            </mat-tab-group>
+
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </mat-card-content>
+    </div>
+
+
+    <table mat-table *ngIf="taskId==1" [dataSource]="dataSource" multiTemplateDataRows class="session-content mat-elevation-z8">
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-radio-button value="{{element.id}}"
+                            (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(element) : null"
+                            [checked]="selection.isSelected(element)">
+          </mat-radio-button>
+        </td>
+      </ng-container>
+
+
+      <ng-container *ngFor="let def of tableDef1">
+        <ng-container [matColumnDef]="def.name" *ngIf="def.name != 'select'">
+          <th mat-header-cell *matHeaderCellDef> {{def.display}} </th>
+          <td mat-cell *matCellDef="let element">
+            {{element[def.name]}}
+            <!--<mat-icon style="margin-left: 10px;" *ngIf="def.name === 'reason' && element[def.name]">expand_more</mat-icon>-->
+          </td>
+        </ng-container>
+      </ng-container>
+
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay1.length">
+          <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="example-element-description">
+              <p><b>Reason: </b></p>
+              {{element.reason}}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay1"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay1;"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+
+    <table mat-table *ngIf="taskId==2" [dataSource]="dataSource" multiTemplateDataRows class="session-content mat-elevation-z8">
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-radio-button value="{{element.id}}"
+                            (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(element) : null"
+                            [checked]="selection.isSelected(element)">
+          </mat-radio-button>
+        </td>
+      </ng-container>
+
+
+      <ng-container *ngFor="let def of tableDef2">
+        <ng-container [matColumnDef]="def.name" *ngIf="def.name != 'select'">
+          <th mat-header-cell *matHeaderCellDef> {{def.display}} </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="cell-content">{{element[def.name]}}</span>
+            <span *ngIf="def.name === 'reason' && element[def.name] && expandedElement == null" class="show-more"
+                  (click)="expandedElement = expandedElement === element ? null : element">show more</span>
+            <span *ngIf="def.name === 'reason' && element[def.name] && expandedElement == element" class="show-more"
+                  (click)="expandedElement = expandedElement === element ? null : element">show less</span>
+          </td>
+        </ng-container>
+      </ng-container>
+
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay2.length">
+          <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="example-element-description">
+              <p><b>Reason: </b></p>
+              {{element.reason}}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+
+  </mat-card>
+
+  <mat-card class="example-card card-fix" [hidden]="!showError">
+    <div class="card-fix-container">
+      <mat-card-header></mat-card-header>
+      <mat-card-content class="center">
+        <h1>Ops! Something went wrong. Please refresh the page.</h1>
+      </mat-card-content>
+    </div>
+  </mat-card>
+
+</div>

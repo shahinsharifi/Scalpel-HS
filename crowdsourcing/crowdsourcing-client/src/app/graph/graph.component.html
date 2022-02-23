@@ -1,0 +1,44 @@
+<div class="page">
+  <ngx-graph
+    [links]="links"
+    [nodes]="nodes"
+    [layout]="layout"
+    [curve]="curve"
+    [draggingEnabled]="draggingEnabled"
+    [panningEnabled]="panningEnabled"
+    [enableZoom]="zoomEnabled"
+    [zoomSpeed]="zoomSpeed"
+    [minZoomLevel]="minZoomLevel"
+    [maxZoomLevel]="maxZoomLevel"
+    [panOnZoom]="panOnZoom"
+    [autoZoom]="autoZoom"
+    [autoCenter]="autoCenter"
+    [zoomToFit$]="zoomToFit$"
+  >
+
+    <ng-template #defsTemplate>
+      <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+        <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+      </svg:marker>
+    </ng-template>
+
+    <ng-template #nodeTemplate let-node >
+      <svg:g class="node" (mouseenter) ="onMouseEnter(node,'object')"  (mouseleave) ="onMouseLeave()">
+        <svg:rect [attr.width]="node.dimension.width" [attr.height]="node.dimension.height" [attr.fill]="node.data.color" />
+        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2">{{node.label}}</svg:text>
+      </svg:g>
+    </ng-template>
+
+    <ng-template #linkTemplate let-link class="relationship">
+      <svg:g class="edge">
+        <svg:path class="line" stroke-width="2" marker-end="url(#arrow)" (mouseenter) ="onMouseEnter(link, 'link')"  (mouseleave) ="onMouseLeave()">
+        </svg:path>
+        <svg:text class="edge-label" text-anchor="middle" (mouseenter) ="onMouseEnter(link, 'link')"  (mouseleave) ="onMouseLeave()">
+          <textPath class="text-path" [attr.href]="'#' + link.id" [style.dominant-baseline]="link.dominantBaseline" startOffset="50%">
+            {{link.label}}
+          </textPath>
+        </svg:text>
+      </svg:g>
+    </ng-template>
+  </ngx-graph>
+</div>

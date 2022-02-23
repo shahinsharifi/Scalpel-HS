@@ -1,0 +1,172 @@
+<div class="main-content" [hidden]="!isSceneAvailable">
+
+  <mat-card class="example-card card-fix" >
+    <mat-card-header *ngIf="!sessionId">
+      <mat-icon aria-hidden="false" style="color: red;cursor: pointer;" aria-label="Example home icon" (click)="openInfoWindow()">bar_chart</mat-icon>
+      <mat-card-title>Current Evaluations: {{total}}</mat-card-title>
+    </mat-card-header>
+    <div class="card-fix-container">
+      <mat-card-content #parentElement class="image-parent-container">
+        <mat-grid-list [cols]="breakpoint" rowHeight="700" (window:resize)="onResize($event)" class="grid-container" [gutterSize]="20">
+
+          <mat-grid-tile [colspan]="tiles[0].cols" [rowspan]="tiles[0].rows">
+            <mat-tab-group class="tab-container" [selectedIndex]="selectedImageTabIndex"  dynamicHeight>
+              <mat-tab label="Original Image: {{sceneCategory}}">
+                <app-image class="image-content" *ngIf="isImageLoaded" [width]="width" [active-annotation]="activeBboxDrawing"
+                           [current-image]="sceneImage" class="image-viewer">
+                </app-image>
+
+              </mat-tab>
+
+            </mat-tab-group>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="tiles[1].cols" [rowspan]="tiles[1].rows" >
+
+            <mat-tab-group class="tab-container"  dynamicHeight>
+              <mat-tab label="Visually Similar" >
+                <ng-template matTabContent>
+                  <section class="clearfix filterPortfolio products-grid">
+                    <br>
+                    <div class="container">
+                      <div class="container">
+                        <div class="row isotopeContainer" id="container2">
+                          <span style="padding-left: 10px; position: relative;display: inline-flex;" *ngFor="let image of similars">
+                            <img  style="height: 150px" [src]="imageURL + image.image" />
+                            <mat-chip-list class="image-tag"><mat-chip>{{image.label}}</mat-chip></mat-chip-list>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </ng-template>
+              </mat-tab>
+              <mat-tab label="{{sceneCategory}} Samples" >
+                <ng-template matTabContent>
+                  <section class="clearfix filterPortfolio products-grid">
+                    <br>
+                    <div class="container">
+                      <div class="row isotopeContainer" id="container">
+                        <span style="height: 150px; padding-left: 10px;" *ngFor="let image of randoms">
+                            <img  style="height: 150px" [src]="imageURL + image.imageName" />
+                          </span>
+                      </div>
+                    </div>
+                  </section>
+                </ng-template>
+              </mat-tab>
+
+
+            </mat-tab-group>
+
+          </mat-grid-tile>
+
+        </mat-grid-list>
+        <br>
+        <mat-divider></mat-divider>
+        <div class="session-content ">
+
+          <mat-grid-list cols="6" rowHeight="100px" >
+            <mat-grid-tile colspan="2" class="label-content">
+              <p>
+                Is this image about <b>{{sceneCategory}}</b> (or does it contain <b>{{sceneCategory}}</b>)?
+              </p>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+              <div class="container3">
+                <mat-radio-group aria-label="Select an option" [color]="'primary'" [(ngModel)]="selectedLabelValidity" (change)="onRadioChange2()">
+                  <mat-radio-button value="1">Yes</mat-radio-button>
+                  <mat-radio-button value="2">Maybe</mat-radio-button>
+                  <mat-radio-button value="3">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <mat-grid-list cols="6" rowHeight="100px" [hidden]="selectedLabelValidity == null || selectedLabelValidity == 1 || selectedLabelValidity == 2">
+            <mat-grid-tile colspan="2">
+              <p [hidden]="selectedLabelValidity == null || selectedLabelValidity == 1 || selectedLabelValidity == 2">
+                Please tell us your reason why it is not <b>{{sceneCategory}}</b>:<br>
+              </p>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="4">
+              <mat-grid-list cols="1" class="container" [hidden]="selectedLabelValidity == null || selectedLabelValidity == 1 || selectedLabelValidity == 2">
+                <mat-grid-tile colspan="1">
+                  <form class="message-area">
+                    <mat-form-field class="example-full-width">
+                      <input matInput #message maxlength="256" placeholder="your reason(optional with bonus)" [(ngModel)]="reason2" [ngModelOptions]="{standalone: true}" autocomplete="off">
+                      <mat-hint align="start"><strong>Please explain in simple words</strong> </mat-hint>
+                      <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                    </mat-form-field>
+                  </form>
+                </mat-grid-tile>
+              </mat-grid-list>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+
+          <mat-grid-list cols="6" rowHeight="100px" *ngIf="selectedLabelValidity == 1 || selectedLabelValidity == 2">
+            <mat-grid-tile colspan="2" class="label-content">
+              <p style="margin-top: 31px;">
+                Is this a typical <b>{{sceneCategory}}</b> or an unusual one? (please select an option)
+              </p>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="3">
+              <div class="container4">
+                <!--<mat-radio-group aria-label="Select an option" [color]="'primary'" [(ngModel)]="selectedType" (change)="onRadioChange()">
+                  <mat-radio-button value="2">Unusual</mat-radio-button>
+                  <mat-radio-button value="1">Typical</mat-radio-button>
+                </mat-radio-group>-->
+                <mat-hint style="margin-right: 5px;"><strong>1</strong>: Highly Typical</mat-hint>
+                <mat-slider
+                  class="example-margin"
+                  [color]="'primary'"
+                  [max]="7"
+                  [min]="1"
+                  [value]="4"
+                  [step]="1"
+                  (change) = "onSliderChange($event)"
+                  [thumbLabel]="true"
+                  [tickInterval]="1">
+                </mat-slider>
+                <mat-hint style="margin-left: 5px;"><strong>7</strong>: Highly Unusual</mat-hint>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <mat-grid-list cols="6" rowHeight="100px" [hidden]="selectedType == null || selectedType < 5">
+            <mat-grid-tile colspan="2">
+              <p style="margin-top: 31px;" [hidden]="selectedType == null || selectedType < 5">
+                Please tell us your reason why it is an unusual <b>{{sceneCategory}}</b>:<br>
+              </p>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="4">
+              <mat-grid-list cols="1" class="container" [hidden]="selectedType == null || selectedType < 5">
+                <mat-grid-tile colspan="1">
+                  <form class="message-area">
+                    <mat-form-field class="example-full-width">
+                      <input matInput #message maxlength="256" placeholder="your reason (optional with bonus)" [(ngModel)]="reason" [ngModelOptions]="{standalone: true}" autocomplete="off">
+                      <mat-hint align="start"><strong>Please explain in simple words</strong> </mat-hint>
+                      <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                    </mat-form-field>
+                  </form>
+                </mat-grid-tile>
+              </mat-grid-list>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+          <mat-card-actions align="end">
+            <button mat-raised-button color="primary" (click)="sendData()" [disabled]="selectedLabelValidity == null ||
+             (selectedLabelValidity != 3 && selectedType == null) || (selectedType > 4 && !reason)">Submit</button>
+          </mat-card-actions>
+        </div>
+      </mat-card-content>
+    </div>
+
+
+
+
+
+  </mat-card>
+
+
+
+</div>

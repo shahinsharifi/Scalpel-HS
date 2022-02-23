@@ -1,0 +1,62 @@
+<mat-dialog-content>
+
+  <mat-grid-list cols="6" rowHeight="100px" >
+    <mat-grid-tile colspan="3">
+      <mat-hint *ngIf="relation.object2Label == null">
+        Please score how relevant the object <strong>"{{relation.object1Label | objectLabel}}"</strong>
+        is in identifying the scene in the given image as a <strong>"{{relation.sceneCategory}}"</strong>:
+      </mat-hint>
+      <mat-hint *ngIf="relation.object1Label != null && relation.object2Label != null">
+        Please score how relevant the relation <strong>"{{relation.object1Label | objectLabel}} {{relation.relationLabel}} {{relation.object2Label | objectLabel}}"</strong>
+        is in identifying the scene in the given image as a <strong>"{{relation.sceneCategory}}"</strong>:
+      </mat-hint>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3" align="end">
+      <mat-grid-list cols="1" class="container">
+        <mat-grid-tile colspan="1">
+          <div class="container3">
+            <mat-hint><strong>1</strong>: Not relevant</mat-hint>
+            <mat-slider
+              class="example-margin"
+              (valueChange)="onScoreChange()"
+              [color]="'primary'"
+              [max]="20"
+              [min]="1"
+              [step]="1"
+              [(ngModel)]="relation.weight"
+              [thumbLabel]="true"
+              [tickInterval]="true">
+            </mat-slider>
+            <mat-hint><strong>20</strong>: Highly relevant</mat-hint>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="8" rowHeight="100px" class="score-section">
+    <mat-grid-tile colspan="3">
+      <mat-hint>
+        Please shortly explain the reason for your score: <br>
+      </mat-hint>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="5" >
+      <mat-grid-list cols="1" class="container">
+        <mat-grid-tile colspan="1">
+          <form class="message-area">
+            <mat-form-field class="example-full-width">
+              <input matInput #message maxlength="256" placeholder="your reason(optional with bonus)" [(ngModel)]="relation.reason" [ngModelOptions]="{standalone: true}" autocomplete="off">
+              <mat-hint align="start"><strong>Please explain in simple words</strong> </mat-hint>
+              <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+            </mat-form-field>
+          </form>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close color="warn">Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="relation" color="primary" cdkFocusInitial [disabled]="!this.scoreMoved">Save</button>
+</mat-dialog-actions>

@@ -1,0 +1,114 @@
+<div class="table-container">
+  <mat-list *ngIf="!readonly">
+    <mat-list-item  #relationTable *ngFor="let relation of tmpRelations" (mouseenter) ="onMouseEnter(relation)" (mouseleave) ="onMouseLeave()"
+                    [hidden]="(taskID == 1 && !relation.isEdited && !relation.isAnnotated) || (taskID == 2 && !relation.isNewRelation)">
+      <table class="relationship-row" border="0">
+        <tr class="item" style="height: 80px;">
+          <td class="item-text">
+            <div *ngIf="taskID == 1">
+              <mat-checkbox color="primary" [hidden]="!relation.isAnnotated || !editActivate || !relation.valid" [(ngModel)]="relation.isChosen"></mat-checkbox>
+              <span class="object1">{{relation.object1Label | objectLabel}} </span>
+              <span>{{relation.relationLabel | objectLabel}} </span>
+              <span class="object2">{{relation.object2Label | objectLabel}} </span>
+              <mat-icon class="valid" [hidden]="(relation.valid == null || relation.valid == false) || !relation.isAnnotated">check_circle</mat-icon>
+              <mat-icon class="invalid" [hidden]="(relation.valid == null || relation.valid == true) || !relation.isAnnotated">highlight_off</mat-icon>
+            </div>
+            <div *ngIf="taskID == 2">
+              <span class="object1">{{relation.object1Label | objectLabel}} </span>
+              <span>{{relation.relationLabel | objectLabel}} </span>
+              <span class="object2">{{relation.object2Label | objectLabel}} </span>
+              <sup [hidden]="(relation.isAnnotated == null || !relation.isAnnotated)">
+                <mat-hint class="judge-section">
+                  judged<mat-icon class="valid">done</mat-icon>
+                </mat-hint>
+              </sup>
+
+
+            </div>
+          </td>
+          <td class="item-rating" [hidden]="!relation.isAnnotated">
+            <div class="tooltip" [hidden]="relation.valid == false" matTooltip="{{importanceTooltip.join('\n')}}">Importance
+            </div>
+            <mat-slider
+              color="primary"
+              [hidden]="relation.valid == false"
+              class="example-margin"
+              [max]="20"
+              [min]="1"
+              [step]="1"
+              [(ngModel)]="relation.weight"
+              [tickInterval]="true">
+            </mat-slider>
+          </td>
+          <td class="item-buttons">
+            <mat-chip-list>
+              <div *ngIf="taskID == 1">
+                <mat-chip class="wrong-button" [hidden]="relation.isAnnotated" (click)="annotate(relation,false)">Wrong</mat-chip>
+                <mat-chip class="correct-button" [hidden]="relation.isAnnotated" (click)="annotate(relation,true)">Correct</mat-chip>
+                <mat-chip class="edit-button" [hidden]="!relation.isAnnotated || !editActivate || relation.isNewRelation" (click)="edit(relation)">Edit</mat-chip>
+                <mat-chip class="wrong-button" *ngIf="relation.isAnnotated && editActivate && relation.isNewRelation" (click)="delete(relation)">Delete</mat-chip>
+              </div>
+              <div *ngIf="taskID == 2">
+                <mat-chip class="wrong-button"  (click)="delete(relation)">Delete</mat-chip>
+                <mat-chip class="correct-button"  (click)="judge(relation)">Judge</mat-chip>
+              </div>
+            </mat-chip-list>
+          </td>
+        </tr>
+      </table>
+    </mat-list-item>
+  </mat-list>
+
+  <mat-list *ngIf="readonly">
+    <mat-list-item  #relationTable *ngFor="let relation of relations" (mouseenter) ="onMouseEnter(relation)" (mouseleave) ="onMouseLeave()">
+      <table class="relationship-row" border="0">
+        <tr class="item" style="height: 80px;">
+          <td class="item-text">
+            <div *ngIf="taskID == 1">
+              <mat-checkbox color="primary"  [(ngModel)]="relation.isChosen"></mat-checkbox>
+              <span class="object1">{{relation.object1Label | objectLabel}} </span>
+              <span>{{relation.relationLabel | objectLabel}} </span>
+              <span class="object2">{{relation.object2Label | objectLabel}} </span>
+              <span *ngIf="relation.object1Score != null || relation.object2Score != null">
+                <mat-icon class="valid" [hidden]="(relation.valid == null || relation.valid == false) || !relation.isAnnotated">check_circle</mat-icon>
+                <mat-icon class="invalid" [hidden]="(relation.valid == null || relation.valid == true) || !relation.isAnnotated">highlight_off</mat-icon>
+              </span>
+              <mat-icon class="new" *ngIf="relation.object1Score == null && relation.object2Score == null">fiber_new</mat-icon>
+            </div>
+            <div *ngIf="taskID == 2">
+              <span class="object1">{{relation.object1Label | objectLabel}} </span>
+              <span>{{relation.relationLabel | objectLabel}} </span>
+              <span class="object2">{{relation.object2Label | objectLabel}} </span>
+              <sup [hidden]="(relation.isAnnotated == null || !relation.isAnnotated)">
+                <mat-hint class="judge-section">
+                  judged<mat-icon class="valid">done</mat-icon>
+                </mat-hint>
+              </sup>
+
+
+            </div>
+          </td>
+          <td class="item-rating" [hidden]="!relation.isAnnotated">
+            <div class="tooltip" [hidden]="relation.valid == false" matTooltip="{{importanceTooltip.join('\n')}}">Importance
+            </div>
+            <mat-slider
+              color="primary"
+              [hidden]="relation.valid == false"
+              class="example-margin"
+              [max]="20"
+              [min]="1"
+              [step]="1"
+              [(ngModel)]="relation.weight"
+              [tickInterval]="true">
+            </mat-slider>
+          </td>
+          <td class="item-buttons">
+            <mat-chip-list>
+              <mat-chip class="correct-button" *ngIf="relation.reason" (click)="showReason(relation)">Show Reason</mat-chip>
+            </mat-chip-list>
+          </td>
+        </tr>
+      </table>
+    </mat-list-item>
+  </mat-list>
+</div>

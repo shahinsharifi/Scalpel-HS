@@ -1,0 +1,150 @@
+<div mat-dialog-content *ngIf="!data.isWarning && !data.success">
+
+  <mat-grid-list cols="6" rowHeight="100px" *ngIf="data.objectSelectionEnabled">
+    <mat-grid-tile colspan="4">
+      <p>
+        Please choose all objects which are specifically relevant to <strong>"{{data.label}}"</strong>:
+      </p>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <mat-grid-list cols="1" class="container">
+        <mat-grid-tile colspan="1">
+          <div class="container3">
+            <mat-form-field>
+              <mat-select placeholder="Objects" [formControl]="objectCtrl" [(ngModel)]="sceneData.objectList" multiple>
+                <mat-select-trigger>
+                  {{objectCtrl.value ? objectCtrl.value[0] : ''}}
+                  <span *ngIf="objectCtrl.value?.length > 1" class="example-additional-selection">
+                    (+{{objectCtrl.value.length - 1}} {{objectCtrl.value?.length === 2 ? 'other' : 'others'}})
+                  </span>
+                </mat-select-trigger>
+                <mat-option *ngFor="let object of data.objects" [value]="object">{{object}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+  <mat-grid-list cols="8" rowHeight="100px" *ngIf="data.sceneInfoEnabled">
+    <mat-grid-tile colspan="4">
+      <p>
+        Is this a typical <strong>{{data.label}}</strong> scene or an unusual one? (please select an option)
+      </p>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4">
+      <mat-grid-list cols="3" class="container">
+        <mat-grid-tile colspan="2">
+          <div class="container3">
+            <mat-radio-group aria-label="Select an option" [color]="'primary'" [(ngModel)]="selectedType" (change)="onRadioChange()">
+              <mat-radio-button value="2">Unusual</mat-radio-button>
+              <mat-radio-button value="1">Typical</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="8" rowHeight="100px" *ngIf="data.sceneInfoEnabled">
+    <mat-grid-tile colspan="4">
+      <p [hidden]="sceneData.isTypical == null || sceneData.isTypical == true">
+        Please tell us your reason why it is an unusual scene:<br>
+      </p>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4">
+      <mat-grid-list cols="1" class="container" [hidden]="sceneData.isTypical == null || sceneData.isTypical == true">
+        <mat-grid-tile colspan="1">
+          <form class="message-area">
+            <mat-form-field class="example-full-width">
+              <input matInput #message maxlength="256" placeholder="your reason(optional with bonus)" [(ngModel)]="sceneData.reason" [ngModelOptions]="{standalone: true}" autocomplete="off">
+              <mat-hint align="start"><strong>Please explain in simple words</strong> </mat-hint>
+              <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+            </mat-form-field>
+          </form>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <div>
+    <p>In  order to finish your task, please enter <strong>yes</strong> in the text field and confirm by clicking 'SUBMIT'</p>
+    <mat-form-field>
+      <input type="text" placeholder="write here..."  matInput [(ngModel)]="response" autocomplete="off">
+    </mat-form-field>
+  </div>
+
+</div>
+
+<div mat-dialog-content *ngIf="data.isWarning || data.success">
+
+  <p *ngIf="data.activeAddRelation || data.skipEnabled" class="title-section">
+    You have evaluated all items in the relation list!
+    <button mat-icon-button class="close-button" [mat-dialog-close]="null" matTooltip="Close">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+  </p>
+  <mat-divider *ngIf="data.activeAddRelation || data.skipEnabled"></mat-divider>
+
+  <mat-grid-list cols="8" rowHeight="50px" *ngIf="data.activeAddRelation" class="checkbox-section">
+    <mat-grid-tile colspan="4">
+      <p>
+        Is the label <strong>"{{data.label}}"</strong> correct or wrong? (please select an option)
+      </p>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4">
+      <mat-grid-list cols="3" class="container">
+        <mat-grid-tile colspan="2">
+          <div class="container3">
+            <mat-radio-group aria-label="Select an option" [color]="'primary'" [(ngModel)]="selectedLabelStatus" (change)="onLabelCorrect()">
+              <mat-radio-button value="2">Wrong</mat-radio-button>
+              <mat-radio-button value="1">Correct</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="8" rowHeight="100px" *ngIf="data.activeAddRelation && (sceneData.isNoRelation || sceneData.isWrongLabel)">
+    <mat-grid-tile colspan="2">
+      <p>
+        Please explain your reason:<br>
+      </p>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="6">
+      <mat-grid-list cols="1" class="container">
+        <mat-grid-tile colspan="1">
+          <form class="message-area">
+            <mat-form-field class="example-full-width">
+              <input matInput #message2 maxlength="256" placeholder="your reason(optional with bonus)" [(ngModel)]="sceneData.reason" [ngModelOptions]="{standalone: true}" autocomplete="off">
+              <mat-hint align="start"><strong>Please explain in simple words</strong> </mat-hint>
+              <mat-hint align="end">{{message2.value.length}} / 256</mat-hint>
+            </mat-form-field>
+          </form>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+  <p [hidden]="sceneData.isWrongLabel">
+    <span *ngIf="data.activeAddRelation && !data.skipEnabled">You marked all relations as <span style="color: red;">'Wrong'</span>.
+    </span> {{data.message}} <strong *ngIf="data.label && !data.sceneInfoEnabled">"{{data.label}}"</strong>
+    <span *ngIf="data.activeAddRelation && data.skipEnabled ">, or click 'SKIP' if there are no new relations that you would like to add.</span>
+  </p>
+  <p *ngIf="!sceneData.isWrongLabel && data.isMinimumSet">Then, press 'SUBMIT' button to submit your input.</p>
+
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close *ngIf="data.success" color="primary">FINISH</button>
+  <button mat-raised-button [mat-dialog-close]="sceneData" *ngIf="data.isWarning && data.skipEnabled  && !sceneData.isWrongLabel" [disabled]="selectedLabelStatus == null" (click)="skip()" color="warn">SKIP</button>
+  <button mat-raised-button [mat-dialog-close]="sceneData" *ngIf="data.isWarning && data.activeAddRelation && !sceneData.isWrongLabel" [disabled]="selectedLabelStatus == null" (click)="addNewRelation()">ADD RELATION</button>
+  <button mat-raised-button [mat-dialog-close]="null" *ngIf="data.isWarning && !sceneData.isWrongLabel && !data.activeAddRelation" color="warn">OK</button>
+  <button mat-raised-button mat-dialog-close [mat-dialog-close]="sceneData" *ngIf="data.isWarning && sceneData.isWrongLabel" [disabled]="sceneData.reason.length < 8" color="warn">SUBMIT</button>
+  <button mat-raised-button mat-dialog-close *ngIf="!data.isWarning && !data.success" color="warn">CANCEL</button>
+  <button mat-raised-button [mat-dialog-close]="sceneData" cdkFocusInitial [disabled]="response!=='yes' || (sceneData.isTypical == null && data.sceneInfoEnabled)" (click)="submit()" *ngIf="!data.isWarning && !data.success" color="primary">SUBMIT</button>
+</mat-dialog-actions>

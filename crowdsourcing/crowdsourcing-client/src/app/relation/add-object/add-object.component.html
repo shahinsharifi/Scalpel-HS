@@ -1,0 +1,139 @@
+<div>
+  <div id="relations-add-panel-text">
+
+    <div>
+      <mat-grid-list cols="8" rowHeight="100px" class="relation-section">
+        <mat-grid-tile colspan="2">
+          <mat-hint>
+            <strong>Object Label: </strong>
+          </mat-hint>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="6">
+          <mat-grid-list cols="6" class="container relation-section">
+            <mat-grid-tile colspan="2">
+              <app-drop-down-list [items]="objects" [name]="'Object'" class="dropdown" [reset]="resetDropdownFlag" [disable]="!objectAnnotation.object1Bbox" (click)="checkForBox()" (onItemSelected)="updateAnnotation($event, 'obj1')">
+              </app-drop-down-list>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+              <app-drop-down-list [items]="types" [name]="'Type'" class="dropdown" [reset]="resetDropdownFlag" [hidden]="!objectAnnotation.object1Label" (onItemSelected)="updateAnnotation($event, 'type1')">
+              </app-drop-down-list>
+            </mat-grid-tile >
+            <mat-grid-tile colspan="2">
+              <app-color-picker [name]="'Color'" class="dropdown" [reset]="resetDropdownFlag" [hidden]="!objectAnnotation.object1Type" (onColorSelected)="updateAnnotation($event, 'attribute1')"></app-color-picker>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="8" rowHeight="50px" class="relation-section">
+        <mat-grid-tile colspan="6">
+          <div>
+            <mat-hint>
+              * I want to add a relation between the objects
+            </mat-hint>
+            <mat-checkbox style="margin-left: 10px" [color]="'warn'" [(ngModel)]="addRelationActive" [disabled]="objectList.length < 2" (click)="checkForObjects()"></mat-checkbox>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="8" rowHeight="100px" >
+        <mat-grid-tile colspan="1"></mat-grid-tile>
+        <mat-grid-tile colspan="7">
+          <mat-grid-list cols="1" class="container">
+            <mat-grid-tile colspan="1">
+              <div class="container2">
+                <button color="warn" mat-raised-button (click)="resetRelation()">Reset</button>
+                <button color="primary" mat-raised-button (click)="addObject()" [disabled]="!objectAnnotation.object1Type">Add</button>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    </div>
+
+    <mat-divider *ngIf="addRelationActive"></mat-divider>
+
+    <div [hidden]="!addRelationActive">
+
+      <mat-grid-list cols="8" rowHeight="80px" >
+
+        <mat-grid-tile colspan="2" rowspan="1">
+          <mat-hint>
+            <strong>Choose object 1: </strong>
+          </mat-hint>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="6" rowspan="1">
+          <mat-grid-list cols="1" class="container">
+            <mat-grid-tile colspan="1">
+              <mat-form-field>
+                <mat-label>Objects</mat-label>
+                <mat-select [(value)]="selectedObject1" (selectionChange)="onObjectSelected()" (focusout)="onObjectSelected()">
+                  <mat-option *ngFor="let obj of objectList" [value]="obj" (mouseenter)="onObjectOver(obj,1)">
+                    {{obj.object1Label}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-icon class="bbox1" style="margin-left: 20px">crop_din</mat-icon>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile colspan="2" rowspan="1">
+          <mat-hint>
+            <strong>Choose relation: </strong>
+          </mat-hint>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="6" rowspan="1">
+          <mat-grid-list cols="1" class="container">
+            <mat-grid-tile colspan="1">
+              <app-drop-down-list [items]="relations" [name]="'Relation'" [reset]="resetDropdownFlag" (onItemSelected)="relationAnnotation.relationLabel = $event.name">
+              </app-drop-down-list>
+              <mat-icon  style="color: transparent">crop_din</mat-icon>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2" rowspan="1">
+          <mat-hint>
+            <strong>Choose object 2: </strong>
+          </mat-hint>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="6" rowspan="1">
+          <mat-grid-list cols="1" class="container">
+            <mat-grid-tile colspan="1">
+              <mat-form-field>
+                <mat-label>Objects</mat-label>
+                <mat-select [(value)]="selectedObject2" (selectionChange)="onObjectSelected()" (focusout)="onObjectSelected()">
+                  <mat-option *ngFor="let obj of objectList" [value]="obj" (mouseenter)="onObjectOver(obj,2)">
+                    {{obj.object1Label}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-icon class="bbox2" style="margin-left: 20px">crop_din</mat-icon>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+      <mat-grid-list cols="8" rowHeight="100px">
+        <mat-grid-tile colspan="1"></mat-grid-tile>
+        <mat-grid-tile colspan="7">
+          <mat-grid-list cols="1" class="container">
+            <mat-grid-tile colspan="1">
+              <div class="container2">
+                <button color="warn" mat-raised-button (click)="resetRelation()">Reset</button>
+                <button color="primary" mat-raised-button (click)="addRelation()"
+                        [disabled]="!relationAnnotation.object1Label || !relationAnnotation.object2Label || !relationAnnotation.relationLabel">Add</button>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    </div>
+
+  </div>
+</div>

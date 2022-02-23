@@ -1,0 +1,29 @@
+<div class="main-content" >
+
+  <mat-card class="example-card card-fix" >
+    <div class="card-fix-container">
+      <mat-card-content #parentElement class="image-parent-container">
+        <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="upload($event)" accept="image/x-png,image/gif,image/jpeg"/>
+        <button mat-flat-button color="primary" (click)="csvInput.click()">Choose Image</button>
+        <br><br>
+        <img style="max-width: 500px; max-height: 400px" [src]="previewImg" *ngIf="previewImg"/>
+        <br><br>
+        <mat-divider></mat-divider>
+        <br>
+        <mat-hint *ngIf="images && images.length > 0" style="font-size: larger">Most similar images (left to right):</mat-hint>
+        <section class="clearfix filterPortfolio products-grid">
+          <br>
+          <div class="container">
+            <div class="row isotopeContainer" id="container">
+              <img style="max-width: 200px; max-height: 300px" *ngFor="let image of images" [src]="imageURL + image.image" />
+            </div>
+          </div>
+        </section>
+      </mat-card-content>
+    </div>
+
+  </mat-card>
+
+
+
+</div>

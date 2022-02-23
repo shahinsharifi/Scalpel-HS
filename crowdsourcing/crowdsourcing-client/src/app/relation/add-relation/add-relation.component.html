@@ -1,0 +1,137 @@
+<div>
+  <div id="relations-add-panel-text">
+    <mat-grid-list cols="8" rowHeight="100px">
+      <mat-grid-tile colspan="2">
+        <mat-hint>
+          <strong>STEP1: </strong><br>
+          (identify first object)
+        </mat-hint>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="6">
+        <mat-grid-list cols="3" class="container">
+          <mat-grid-tile >
+              <app-drop-down-list [items]="objects" [name]="'Object 1'" class="dropdown" [reset]="resetDropdownFlag" [disable]="!annotation.object1Bbox" (click)="checkForBox(1)" (onItemSelected)="updateAnnotation($event, 'obj1')">
+              </app-drop-down-list>
+          </mat-grid-tile>
+          <mat-grid-tile >
+            <app-drop-down-list [items]="types" [name]="'Type'" class="dropdown" [reset]="resetDropdownFlag" [hidden]="!annotation.object1Label" (onItemSelected)="updateAnnotation($event, 'type1')">
+            </app-drop-down-list>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <app-color-picker [name]="'Color'" class="dropdown" [reset]="resetDropdownFlag" [hidden]="!annotation.object1Type" (onColorSelected)="updateAnnotation($event, 'attribute1')"></app-color-picker>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="8" [hidden]="!annotation.object1Type" rowHeight="100px">
+      <mat-grid-tile colspan="2">
+        <mat-hint>
+          <strong>STEP2: </strong><br>
+          (specify relation)
+        </mat-hint>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="6">
+        <mat-grid-list cols="3" class="container">
+          <mat-grid-tile colspan="1">
+            <app-drop-down-list [items]="relations" [name]="'Relation'" class="dropdown" [reset]="resetDropdownFlag"
+                                [disable]="!annotation.object1Bbox" [hidden]="!annotation.object1Type"
+                                (onItemSelected)="updateAnnotation($event, 'rel')">
+            </app-drop-down-list>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="8" [hidden]="!annotation.relationLabel" rowHeight="100px">
+      <mat-grid-tile colspan="2">
+        <mat-hint>
+          <strong>STEP3: </strong><br>
+          (identify second object)
+        </mat-hint>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="6">
+        <mat-grid-list cols="3" class="container">
+          <mat-grid-tile >
+            <app-drop-down-list [items]="objects" [name]="'Object 2'" class="dropdown" [reset]="resetDropdownFlag" [disable]="!annotation.object2Bbox" (click)="checkForBox(2)" (onItemSelected)="updateAnnotation($event, 'obj2')">
+            </app-drop-down-list>
+          </mat-grid-tile>
+          <mat-grid-tile >
+            <app-drop-down-list [items]="types" [name]="'Type'" class="dropdown" [reset]="resetDropdownFlag" [hidden]="!annotation.object2Label" (onItemSelected)="updateAnnotation($event, 'type2')">
+            </app-drop-down-list>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <app-color-picker [name]="'Color'" class="dropdown" [reset]="resetDropdownFlag" [hidden]="!annotation.object2Type" (onColorSelected)="updateAnnotation($event, 'attribute2')"></app-color-picker>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="8" [hidden]="!annotation.object2Type" rowHeight="100px">
+      <mat-grid-tile colspan="2">
+        <mat-hint>
+          <strong>STEP4: </strong><br>
+          (specify importance)
+        </mat-hint>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="6">
+        <mat-grid-list cols="3" class="container">
+          <mat-grid-tile colspan="3">
+            <div class="container3">
+              <div class="tooltip" matTooltip="{{tooltip.join('\n')}}">Importance
+              </div><br/>
+              <mat-slider
+                color="primary"
+                class="example-margin"
+                [max]="20"
+                [min]="1"
+                [step]="1"
+                [(ngModel)]="annotation.weight"
+                [thumbLabel]="true"
+                (change)="onScoreChanged()"
+                [tickInterval]="true">
+              </mat-slider>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="8" [hidden]="!annotation.weight" rowHeight="100px">
+      <mat-grid-tile colspan="2">
+        <mat-hint>
+          <strong>STEP5: </strong><br>
+          (give your reason)
+        </mat-hint>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="6">
+        <mat-grid-list cols="1" class="container">
+          <mat-grid-tile colspan="1">
+            <form class="message-area">
+              <mat-form-field class="example-full-width">
+                <input matInput #message maxlength="256" placeholder="your reason(optional with bonus)" autocomplete="off" [(ngModel)]="annotation.reason" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="start"><strong>Please explain the reason for your score in simple words</strong> </mat-hint>
+                <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+              </mat-form-field>
+            </form>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="8" rowHeight="100px">
+      <mat-grid-tile colspan="1"></mat-grid-tile>
+      <mat-grid-tile colspan="7">
+        <mat-grid-list cols="1" class="container">
+          <mat-grid-tile colspan="1">
+            <div class="container2">
+              <button color="warn" mat-raised-button (click)="reset()">Reset</button>
+              <button color="primary" mat-raised-button (click)="add()" [disabled]="!scoreMoved || !annotation.object2Type">Add</button>
+              <button  mat-raised-button [hidden]="isFirstRelation" (click)="goToRelationList()">Go To Relation List</button>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>

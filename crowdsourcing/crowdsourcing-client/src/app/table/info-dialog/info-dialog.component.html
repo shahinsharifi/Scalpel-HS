@@ -1,0 +1,76 @@
+<mat-dialog-content>
+  <mat-grid-list cols="8" rowHeight="100px">
+    <mat-grid-tile colspan="5">
+      <mat-hint>
+        How do you consider the relation of <strong>"{{relation.object1Label | objectLabel}} {{relation.relationLabel}} {{relation.object2Label | objectLabel}}"</strong>
+        in the given image, based on whether it is unusual or typical?
+      </mat-hint>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3">
+      <mat-grid-list cols="3" class="container">
+        <mat-grid-tile colspan="3">
+          <div class="container3">
+            <mat-radio-group aria-label="Select an option" [color]="'primary'" [(ngModel)]="selectedType" (change)="onRadioChange()">
+              <mat-radio-button value="2">Unusual</mat-radio-button>
+              <mat-radio-button value="1">Typical</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="8" rowHeight="100px" >
+    <mat-grid-tile colspan="4">
+      <mat-hint [hidden]="relation.isTypical == null || relation.isTypical == true">
+        Please tell us your reason why it is an unusual relationship: <br>
+      </mat-hint>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4">
+      <mat-grid-list cols="1" class="container" [hidden]="relation.isTypical == null || relation.isTypical == true">
+        <mat-grid-tile colspan="1">
+          <form class="message-area">
+            <mat-form-field class="example-full-width">
+              <input matInput #message maxlength="256" placeholder="your reason(optional with bonus)" [(ngModel)]="relation.reason" [ngModelOptions]="{standalone: true}" autocomplete="off">
+              <mat-hint align="start"><strong>Please explain in simple words</strong> </mat-hint>
+              <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+            </mat-form-field>
+          </form>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="8" rowHeight="100px">
+    <mat-grid-tile colspan="4">
+      <mat-hint>
+        Please score how relevant the relation <strong>"{{relation.object1Label | objectLabel}} {{relation.relationLabel}} {{relation.object2Label | objectLabel}}"</strong>
+        is in identifying the scene in the given image as a <strong>"{{relation.sceneCategory}}"</strong>
+      </mat-hint>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4">
+      <mat-grid-list cols="1" class="container">
+        <mat-grid-tile colspan="1">
+          <div class="container3">
+            <mat-hint><strong>1</strong>: Not relevant</mat-hint>
+            <mat-slider
+              class="example-margin"
+              [color]="'primary'"
+              [max]="20"
+              [min]="1"
+              [step]="1"
+              [(ngModel)]="relation.weight"
+              [thumbLabel]="true"
+              [tickInterval]="true">
+            </mat-slider>
+            <mat-hint><strong>20</strong>: Highly relevant</mat-hint>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close color="warn">Cancel</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial [disabled]="this.selectedType==null">Save</button>
+</mat-dialog-actions>
